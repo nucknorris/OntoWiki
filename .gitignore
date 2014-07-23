@@ -9,7 +9,10 @@ application/tests/cache
 /cache
 /uploads
 /libraries/Zend
+/libraries/vendor
+/libraries/composer*
 /logs
+
 
 # aksw specific mud
 /BlogPost
