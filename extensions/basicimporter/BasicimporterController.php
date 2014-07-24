@@ -196,8 +196,22 @@ class BasicimporterController extends OntoWiki_Controller_Component
     {
         $modelIri = (string)$this->_model;
 
+        // action spec for versioning
+        $versioning = $this->_erfurt->getVersioning();
+        $actionSpec                = array();
+        $actionSpec['type']        = 11;
+        $actionSpec['modeluri']    = $modelIri;
+        $actionSpec['resourceuri'] = $modelIri;
+
         try {
+            // starting versioning action
+            $versioning->startAction($actionSpec);
+
             $this->_erfurt->getStore()->importRdf($modelIri, $fileOrUrl, $filetype, $locator);
+
+            // stopping versioning action
+            $versioning->endAction();
+
         } catch (Erfurt_Exception $e) {
             // re-throw
             throw new OntoWiki_Controller_Exception(

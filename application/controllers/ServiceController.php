@@ -515,6 +515,8 @@ class ServiceController extends Zend_Controller_Action
             $insert = json_decode($this->_request->getParam('insert', '{}'), true);
             $delete = json_decode($this->_request->getParam('delete', '{}'), true);
 
+            $changeReason = $this->_request->getParam('changeReason', null);
+
             if ($this->_request->has('delete_hashed')) {
                 $hashedObjectStatements = $this->_findStatementsForObjectsWithHashes(
                     $namedGraph,
@@ -538,6 +540,18 @@ class ServiceController extends Zend_Controller_Action
         }
 
         $flag = false;
+
+
+         // action spec for versioning
+        $versioning = OntoWiki::getInstance()->erfurt->getVersioning();
+        $actionSpec                 = array();
+        $actionSpec['type']         = 21;
+        $actionSpec['modeluri']     = $deleteModel->getModelUri();
+        $actionSpec['resourceuri']  = !null == key($delete) ? key($delete) : key($insert);
+        $actionSpec['changeReason'] = $changeReason;
+
+        // starting action
+        $versioning->startAction($actionSpec);
 
         /**
          * @trigger onUpdateServiceAction is triggered when Service-Controller Update Action is executed.
@@ -594,6 +608,9 @@ class ServiceController extends Zend_Controller_Action
                 );
             }
         }
+
+        // stopping action
+        $versioning->endAction();
 
         // nothing done?
         if (!$flag) {
