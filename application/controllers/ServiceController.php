@@ -554,14 +554,6 @@ class ServiceController extends Zend_Controller_Action
         $event->insertData  = $insert;
         $event->trigger();
 
-        /**
-        * Trigger Index
-        **/
-        $indexEvent             = new Erfurt_Event('onIndexAction');
-        $indexEvent->resource   = !null == key($delete) ? key($delete) : key($insert);
-        $indexEvent->model      = $deleteModel->getModelUri();
-        $indexEvent->trigger();
-
         // writeback
         $delete  = $event->deleteData;
         $insert  = $event->insertData;
@@ -614,6 +606,14 @@ class ServiceController extends Zend_Controller_Action
                 return;
             }
         }
+
+                /**
+        * Trigger Index
+        **/
+        $indexEvent             = new Erfurt_Event('onIndexAction');
+        $indexEvent->resource   = !null == key($delete) ? key($delete) : key($insert);
+        $indexEvent->model      = $deleteModel->getModelUri();
+        $indexEvent->trigger();
 
         if ($changes) {
             /**
