@@ -412,6 +412,14 @@ class ResourceController extends OntoWiki_Controller_Base
         $event->modelUri      = $modelIri;
         $event->trigger();
 
+        /**
+        * Trigger Index
+        **/
+        $indexEvent             = new Erfurt_Event('onDeleteResourceAction');
+        $indexEvent->resources  = $resources;
+        $indexEvent->model      = $modelIri;
+        $indexEvent->trigger();
+
         $this->_redirect($redirect, array('code' => 302));
     }
 
