@@ -151,6 +151,7 @@ class OntoWiki_Menu_Registry
         $extrasMenu = new OntoWiki_Menu();
 
         $extrasMenu->setEntry('News', $owApp->config->urlBase . 'index/news');
+        $extrasMenu->setEntry('Configure Index', $owApp->config->urlBase . 'fulltextsearch/info');
 
         // help sub menue
         $helpMenu = new OntoWiki_Menu();
