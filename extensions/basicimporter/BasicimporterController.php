@@ -198,6 +198,9 @@ class BasicimporterController extends OntoWiki_Controller_Component
 
         try {
             $this->_erfurt->getStore()->importRdf($modelIri, $fileOrUrl, $filetype, $locator);
+            // Trigger Reindex
+            $indexEvent = new Erfurt_Event('onFullreindexAction');
+            $indexEvent->trigger();
         } catch (Erfurt_Exception $e) {
             // re-throw
             throw new OntoWiki_Controller_Exception(
